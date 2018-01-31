@@ -12,8 +12,8 @@ public class FarmModule extends AbstractModule {
 
     @Override
     public void run() {
-        long shift = 5000;
-        System.out.println(new Date()+"Run FarmModule:"+shift);
+        long shift = 28000;
+        log.info("FarmModule do nothing");
         readyOn = new Date(readyOn.getTime()+shift);
     }
 }

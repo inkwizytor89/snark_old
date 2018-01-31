@@ -12,8 +12,8 @@ public class ExploreModule extends AbstractModule {
 
     @Override
     public void run() {
-        long shift = 3000;
-        System.out.println("Run ExploreModule:"+shift);
+        long shift = 12000;
+        log.info("ExploreModule do nothing");
         readyOn = new Date(readyOn.getTime()+shift);
     }
 }
