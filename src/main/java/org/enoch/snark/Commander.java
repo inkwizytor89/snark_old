@@ -1,6 +1,8 @@
 package org.enoch.snark;
 
 import org.enoch.snark.command.AbstractCommand;
+import org.enoch.snark.command.CommandType;
+import org.enoch.snark.common.CommandQueue;
 
 import java.util.LinkedList;
 import java.util.Queue;
@@ -13,31 +15,12 @@ public class Commander {
 
     private static final int SLEEP_PAUSE = 10;
     private static Commander instance  = null;
-    private static Queue<AbstractCommand> queue;
+
+    private static CommandQueue fleetActionQueue = new CommandQueue(SLEEP_PAUSE);
+    private static CommandQueue interfaceActionQueue = new CommandQueue(SLEEP_PAUSE);
+    private static CommandQueue calculationActionQueue = new CommandQueue(SLEEP_PAUSE);
 
     private Commander() {
-        queue = new LinkedList<>();
-        startQueue();
-    }
-
-    private void startQueue() {
-        Runnable task = () -> {
-            while(true) {
-                while(!queue.isEmpty()) {
-                    AbstractCommand command = queue.remove();
-                    command.execute();
-                }
-                log.info("Comander queue is empty.");
-                try {
-                    TimeUnit.SECONDS.sleep(SLEEP_PAUSE);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        };
-
-        Thread thread = new Thread(task);
-        thread.start();
     }
 
     public static Commander getInstance() {
@@ -48,6 +31,14 @@ public class Commander {
     }
 
     public static void push(AbstractCommand command) {
-        queue.add(command);
+        if (CommandType.FLEET_REQUIERED.equals(command.getType())) {
+            fleetActionQueue.add(command);
+        } else if (CommandType.INTERFACE_REQUIERED.equals(command.getType())) {
+            interfaceActionQueue.add(command);
+        } else if (CommandType.CALCULATION.equals(command.getType())) {
+            calculationActionQueue.add(command);
+        }else {
+            throw new RuntimeException("Invalid type of command");
+        }
     }
 }
