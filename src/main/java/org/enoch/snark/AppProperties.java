@@ -4,6 +4,7 @@ import org.enoch.snark.model.SourcePlanet;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
@@ -14,14 +15,16 @@ public class AppProperties {
 
     private static final String CONFIG_FILE_NAME = "application.properties";
     private static final String CONFIG_DIR_NAME = "src\\main\\resources\\";
+    public static final String WEBDRIVER_CHROME_DRIVER = "webdriver.chrome.driver";
 
     public static String username;
     public static String password;
     public static String server;
+    public static String pathToChromeWebdriver;
 
     public static Integer fleetNumber;
 
-    public static List<SourcePlanet> sourcePlanets;
+    public static List<SourcePlanet> sourcePlanets = new ArrayList<>();
 
     public static void loadApplicationProperties() throws IOException {
         Properties properties = new java.util.Properties();
@@ -37,6 +40,9 @@ public class AppProperties {
         for(String planetCode : planets) {
             sourcePlanets.add(new SourcePlanet(planetCode));
         }
+
+        pathToChromeWebdriver = properties.getProperty(WEBDRIVER_CHROME_DRIVER);
+
         fileInputStream.close();
     }
 }

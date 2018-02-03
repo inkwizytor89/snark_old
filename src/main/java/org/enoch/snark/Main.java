@@ -1,5 +1,6 @@
 package org.enoch.snark;
 
+import org.enoch.snark.gi.Commander;
 import org.enoch.snark.model.Universum;
 
 import java.io.IOException;

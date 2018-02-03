@@ -1,4 +1,4 @@
-package org.enoch.snark.command;
+package org.enoch.snark.gi.command;
 
 import org.enoch.snark.model.FleetBuilder;
 import org.enoch.snark.module.AbstractModule;

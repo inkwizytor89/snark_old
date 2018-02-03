@@ -1,4 +1,4 @@
-package org.enoch.snark.command;
+package org.enoch.snark.gi.command;
 
 import org.enoch.snark.module.AbstractModule;
 
@@ -21,5 +21,9 @@ public abstract class AbstractCommand {
 
     public CommandType getType() {
         return type;
+    }
+
+    public boolean requiredGI() {
+        return type == CommandType.FLEET_REQUIERED || type ==CommandType.INTERFACE_REQUIERED;
     }
 }

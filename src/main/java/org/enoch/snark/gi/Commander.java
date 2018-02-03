@@ -1,7 +1,7 @@
-package org.enoch.snark;
+package org.enoch.snark.gi;
 
-import org.enoch.snark.command.AbstractCommand;
-import org.enoch.snark.command.CommandType;
+import org.enoch.snark.gi.command.AbstractCommand;
+import org.enoch.snark.gi.command.CommandType;
 
 import java.util.LinkedList;
 import java.util.Queue;
@@ -14,11 +14,14 @@ public class Commander {
 
     private static final int SLEEP_PAUSE = 10;
 
+    private GISession session;
+
     private static Queue<AbstractCommand> fleetActionQueue = new LinkedList<>();
     private static Queue<AbstractCommand> interfaceActionQueue = new LinkedList<>();
     private static Queue<AbstractCommand> calculationActionQueue = new LinkedList<>();
 
     private Commander() {
+        session = new GISession();
         startInterfaceQueue();
         startCalculationQueue();
     }
@@ -30,6 +33,7 @@ public class Commander {
     private void startInterfaceQueue() {
         Runnable task = () -> {
             while(true) {
+
                 if(!fleetActionQueue.isEmpty() && isFreeFleetSlot()) {
                     resolve(fleetActionQueue.remove());
                     continue;
@@ -37,6 +41,8 @@ public class Commander {
                     resolve(interfaceActionQueue.remove());
                     continue;
                 }
+
+                if(session.isLoggedIn())    session.close();
                 try {
                     TimeUnit.SECONDS.sleep(SLEEP_PAUSE);
                 } catch (InterruptedException e) {
@@ -66,6 +72,9 @@ public class Commander {
     }
 
     private void resolve(AbstractCommand command) {
+        if(command.requiredGI() && !session.isLoggedIn()) {
+            session.open();
+        }
         command.execute();
         AbstractCommand after = command.doAfter();
         if(after != null) {

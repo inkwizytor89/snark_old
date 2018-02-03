@@ -1,12 +1,11 @@
 package org.enoch.snark.module.farm;
 
-import org.enoch.snark.Commander;
-import org.enoch.snark.command.SpyCommand;
+import org.enoch.snark.gi.Commander;
+import org.enoch.snark.gi.command.SpyCommand;
 import org.enoch.snark.model.TargetPlanet;
 import org.enoch.snark.module.AbstractModule;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class FarmModule extends AbstractModule {
