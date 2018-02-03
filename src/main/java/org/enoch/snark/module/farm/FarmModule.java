@@ -18,6 +18,7 @@ public class FarmModule extends AbstractModule {
     @Override
     public void run() {
 
+        System.out.println("cos sie dzieje");
         List<TargetPlanet> targets = new ArrayList<>();
         for(TargetPlanet target : targets) {
             Commander.push(new SpyCommand(target));

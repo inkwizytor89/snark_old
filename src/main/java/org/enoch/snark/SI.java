@@ -21,7 +21,7 @@ public class SI {
 
     SI() {
         modules.add(new FarmModule());
-        modules.add(new ExploreModule());
+//        modules.add(new ExploreModule());
     }
 
     public void run() {
