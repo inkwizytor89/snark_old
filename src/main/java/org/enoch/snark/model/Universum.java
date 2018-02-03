@@ -1,5 +1,7 @@
 package org.enoch.snark.model;
 
+import org.enoch.snark.AppProperties;
+
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -10,41 +12,15 @@ import static org.enoch.snark.model.Property.*;
 
 public class Universum {
 
-    private static final String CONFIG_FILE_NAME = "application.properties";
-    private static final String CONFIG_DIR_NAME = "src\\main\\resources\\";
-    private static Universum instance  = null;
-
     private static List<SourcePlanet> sourcePlanets;
-    public String username;
-    public String password;
-    public String server;
-
     public Integer fleetNumber;
 
     private Universum() throws IOException {
-        sourcePlanets = new ArrayList<>();
-        loadDataFromConfigFile();
+        sourcePlanets = AppProperties.sourcePlanets;
+        fleetNumber = AppProperties.fleetNumber;
     }
 
-    private void loadDataFromConfigFile() throws IOException {
-        Properties properties = new Properties();
-        FileInputStream fileInputStream = new FileInputStream(CONFIG_DIR_NAME+CONFIG_FILE_NAME);
-        properties.load(fileInputStream);
-        username = properties.getProperty(USER_NAME_LOGIN);
-        password = properties.getProperty(PASSWORD_LOGIN);
-        server = properties.getProperty(SERVER_LOGIN);
-        fleetNumber = Integer.parseInt(properties.getProperty(FLEET_NUMBER));
-        String[] planets = properties.getProperty(PLANET_IDS).split(";");
-        for(String planetCode : planets) {
-            sourcePlanets.add(new SourcePlanet(planetCode));
-        }
-        fileInputStream.close();
-    }
-
-    public static Universum getInstance() throws IOException {
-        if(instance == null) {
-            instance = new Universum();
-        }
-        return instance;
+    public static void createInstance() throws IOException {
+        new Universum();
     }
 }
