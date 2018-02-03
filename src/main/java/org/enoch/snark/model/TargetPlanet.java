@@ -4,7 +4,7 @@ public class TargetPlanet extends Planet {
     private static final Integer COORDINATE_INDEX = 0;
     public Boolean isSkipped = false;
     public static final Integer POWER_INDEX = 1;
-    public Integer power = 5000;
+    public Integer power = null;
 
     public TargetPlanet(String informationString) {
         super();
@@ -14,7 +14,9 @@ public class TargetPlanet extends Planet {
         }
         String[] dataTable = informationString.split("\\s+");
         loadPlanetCoordinate(dataTable[COORDINATE_INDEX]);
-        power = new Integer(dataTable[POWER_INDEX].replaceAll("\\.",""));
+        if(dataTable.length > 1) {
+            power = new Integer(dataTable[POWER_INDEX].replaceAll("\\.", ""));
+        }
     }
 
     @Override

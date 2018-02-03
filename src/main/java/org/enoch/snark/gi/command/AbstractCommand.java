@@ -1,6 +1,9 @@
 package org.enoch.snark.gi.command;
 
+import org.enoch.snark.gi.Commander;
 import org.enoch.snark.module.AbstractModule;
+
+import java.util.concurrent.TimeUnit;
 
 public abstract class AbstractCommand {
 
@@ -15,8 +18,17 @@ public abstract class AbstractCommand {
 
     public abstract void execute();
 
-    public AbstractCommand doAfter() {
-        return null;
+    public void doAfter(AbstractCommand command, int secoundToDelay) {
+        Runnable task = () -> {
+            try {
+                TimeUnit.SECONDS.sleep(secoundToDelay);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            Commander.push(command);
+        };
+
+        new Thread(task).start();
     }
 
     public CommandType getType() {

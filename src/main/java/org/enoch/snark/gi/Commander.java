@@ -76,11 +76,7 @@ public class Commander {
             session.open();
         }
         command.execute();
-        AbstractCommand after = command.doAfter();
-        if(after != null) {
-            Commander.push(after);
-        }
-        log.info("Resolved "+command.toString()+" and prepared "+after);
+        log.info("Resolved "+command.toString());
     }
 
     private boolean isFreeFleetSlot() {

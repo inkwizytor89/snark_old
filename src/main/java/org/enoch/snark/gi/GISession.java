@@ -46,7 +46,6 @@ public class GISession {
     }
 
     private void logOut() {
-
         chromeDriver.findElementByLinkText("Wyloguj").click();
         isLoggedIn = false;
     }
