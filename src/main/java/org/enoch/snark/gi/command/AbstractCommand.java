@@ -9,6 +9,8 @@ public abstract class AbstractCommand {
 
     private AbstractModule sourceModule;
 
+    private AbstractCommand afterCommand;
+
     protected CommandType type = CommandType.CALCULATION;
 
     AbstractCommand(AbstractModule module) {
@@ -18,17 +20,24 @@ public abstract class AbstractCommand {
 
     public abstract void execute();
 
-    public void doAfter(AbstractCommand command, int secoundToDelay) {
+    public void doAfter(int secoundToDelay) {
+        if(afterCommand == null) {
+            return;
+        }
         Runnable task = () -> {
             try {
                 TimeUnit.SECONDS.sleep(secoundToDelay);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            Commander.push(command);
+            Commander.push(afterCommand);
         };
 
         new Thread(task).start();
+    }
+
+    public void setAfterCommand(AbstractCommand afterCommand) {
+        this.afterCommand = afterCommand;
     }
 
     public CommandType getType() {
