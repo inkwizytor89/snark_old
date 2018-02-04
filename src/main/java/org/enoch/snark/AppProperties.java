@@ -13,8 +13,6 @@ import static org.enoch.snark.model.Property.PLANET_IDS;
 
 public class AppProperties {
 
-    private static final String CONFIG_FILE_NAME = "application.properties";
-    private static final String CONFIG_DIR_NAME = "src\\main\\resources\\";
     public static final String WEBDRIVER_CHROME_DRIVER = "webdriver.chrome.driver";
 
     public static String username;
@@ -26,9 +24,9 @@ public class AppProperties {
 
     public static List<SourcePlanet> sourcePlanets = new ArrayList<>();
 
-    public static void loadApplicationProperties() throws IOException {
+    public static void loadApplicationProperties(String pathToProperties) throws IOException {
         Properties properties = new java.util.Properties();
-        FileInputStream fileInputStream = new FileInputStream(CONFIG_DIR_NAME+CONFIG_FILE_NAME);
+        FileInputStream fileInputStream = new FileInputStream(pathToProperties);
         properties.load(fileInputStream);
 
         username = properties.getProperty(USER_NAME_LOGIN);

@@ -11,12 +11,15 @@ import static org.enoch.snark.AppProperties.WEBDRIVER_CHROME_DRIVER;
 
 public class AbstractSeleniumTest {
 
+    private static final String CONFIG_FILE_NAME = "application.properties";
+    private static final String CONFIG_DIR_NAME = "src/test/resources/";
+
     protected final ChromeDriver chromeDriver;
     protected final Selenium selenium;
 
     AbstractSeleniumTest() {
         try {
-            AppProperties.loadApplicationProperties();
+            AppProperties.loadApplicationProperties(CONFIG_DIR_NAME+CONFIG_FILE_NAME);
         } catch (IOException e) {
             e.printStackTrace();
         }
