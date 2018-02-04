@@ -14,7 +14,7 @@ public class Commander {
 
     private static final int SLEEP_PAUSE = 10;
 
-    private GISession session;
+    private static GISession session;
 
     private static Queue<AbstractCommand> fleetActionQueue = new LinkedList<>();
     private static Queue<AbstractCommand> interfaceActionQueue = new LinkedList<>();
@@ -28,6 +28,16 @@ public class Commander {
 
     public static void createInstance() {
         new Commander();
+    }
+
+    // TODO: 2018-02-04 remove function and fix GI access
+    @Deprecated
+    public static void setSession(GISession session) {
+        Commander.session = session;
+    }
+
+    public static GISession getSession() {
+        return session;
     }
 
     private void startInterfaceQueue() {

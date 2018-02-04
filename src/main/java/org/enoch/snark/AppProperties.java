@@ -8,21 +8,22 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
-import static org.enoch.snark.model.Property.*;
-import static org.enoch.snark.model.Property.PLANET_IDS;
+import static org.enoch.snark.PropertyNames.*;
+import static org.enoch.snark.PropertyNames.PLANET_IDS;
 
 public class AppProperties {
-
-    public static final String WEBDRIVER_CHROME_DRIVER = "webdriver.chrome.driver";
 
     public static String username;
     public static String password;
     public static String server;
-    public static String pathToChromeWebdriver;
+
+    public static String loginUrl;
+    public static String mainUrl;
 
     public static Integer fleetNumber;
-
     public static List<SourcePlanet> sourcePlanets = new ArrayList<>();
+
+    public static String pathToChromeWebdriver;
 
     public static void loadApplicationProperties(String pathToProperties) throws IOException {
         Properties properties = new java.util.Properties();
@@ -32,6 +33,10 @@ public class AppProperties {
         username = properties.getProperty(USER_NAME_LOGIN);
         password = properties.getProperty(PASSWORD_LOGIN);
         server = properties.getProperty(SERVER_LOGIN);
+
+        loginUrl = properties.getProperty(LOGIN_URL);
+        mainUrl = properties.getProperty(PLANET_PATTERN_URL);
+
         fleetNumber = Integer.parseInt(properties.getProperty(FLEET_NUMBER));
 
         String[] planets = properties.getProperty(PLANET_IDS).split(";");

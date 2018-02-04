@@ -6,13 +6,12 @@ import org.enoch.snark.AppProperties;
 import org.openqa.selenium.By;
 import org.openqa.selenium.chrome.ChromeDriver;
 
-import static org.enoch.snark.AppProperties.WEBDRIVER_CHROME_DRIVER;
+import static org.enoch.snark.PropertyNames.WEBDRIVER_CHROME_DRIVER;
 
 public class GISession {
 
     private final ChromeDriver chromeDriver;
     private final Selenium selenium;
-    static String loginUrl = "https://pl.ogame.gameforge.com/";
 
     private boolean isLoggedIn = false;
 
@@ -20,11 +19,11 @@ public class GISession {
     GISession() {
         System.setProperty(WEBDRIVER_CHROME_DRIVER, AppProperties.pathToChromeWebdriver);
         chromeDriver = new ChromeDriver();
-        selenium = new WebDriverBackedSelenium(chromeDriver, loginUrl);
+        selenium = new WebDriverBackedSelenium(chromeDriver, AppProperties.loginUrl);
     }
 
     public void open() {
-        selenium.open(loginUrl);
+        selenium.open(AppProperties.loginUrl);
         logIn();
     }
 
@@ -52,5 +51,13 @@ public class GISession {
 
     public boolean isLoggedIn() {
         return isLoggedIn;
+    }
+
+    public ChromeDriver getChromeDriver() {
+        return chromeDriver;
+    }
+
+    public Selenium getSelenium() {
+        return selenium;
     }
 }

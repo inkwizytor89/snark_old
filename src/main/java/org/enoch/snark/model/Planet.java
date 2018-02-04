@@ -4,9 +4,9 @@ public class Planet {
     public static final Integer GALAXY_INDEX = 1;
     public static final Integer SYSTEM_INDEX = 2;
     public static final Integer POSITION_INDEX = 3;
-    protected Integer galaxy;
-    protected Integer system;
-    protected Integer position;
+    public Integer galaxy;
+    public Integer system;
+    public Integer position;
 
     protected Planet() {
     }

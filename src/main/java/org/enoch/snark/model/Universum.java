@@ -2,13 +2,8 @@ package org.enoch.snark.model;
 
 import org.enoch.snark.AppProperties;
 
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
-
-import static org.enoch.snark.model.Property.*;
 
 public class Universum {
 
@@ -22,5 +17,19 @@ public class Universum {
 
     public static void createInstance() throws IOException {
         new Universum();
+    }
+
+    public static SourcePlanet findNearestSource(Planet planet) {
+        SourcePlanet nearestPlanet = sourcePlanets.get(0);
+        Integer minDistance = planet.calculateDistance(nearestPlanet);
+
+        for(SourcePlanet source : sourcePlanets) {
+            Integer distance = planet.calculateDistance(source);
+            if (distance < minDistance) {
+                minDistance = distance;
+                nearestPlanet = source;
+            }
+        }
+        return nearestPlanet;
     }
 }
