@@ -1,26 +1,22 @@
 package org.enoch.snark.gi.command;
 
 import org.enoch.snark.gi.Commander;
-import org.enoch.snark.module.AbstractModule;
 
 import java.util.concurrent.TimeUnit;
 
 public abstract class AbstractCommand {
 
-    private AbstractModule sourceModule;
-
     private AbstractCommand afterCommand;
+    private int secoundToDelay;
+    private CommandType type = CommandType.CALCULATION;
 
-    protected CommandType type = CommandType.CALCULATION;
-
-    AbstractCommand(AbstractModule module) {
-
-        sourceModule = module;
+    protected AbstractCommand(CommandType type) {
+        this.type = type;
     }
 
     public abstract void execute();
 
-    public void doAfter(int secoundToDelay) {
+    public void doAfter() {
         if(afterCommand == null) {
             return;
         }
@@ -34,6 +30,10 @@ public abstract class AbstractCommand {
         };
 
         new Thread(task).start();
+    }
+
+    public void setSecoundToDelay(int secoundToDelay) {
+        this.secoundToDelay = secoundToDelay;
     }
 
     public void setAfterCommand(AbstractCommand afterCommand) {

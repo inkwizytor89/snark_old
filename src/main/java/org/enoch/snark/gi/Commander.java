@@ -76,6 +76,7 @@ public class Commander {
             session.open();
         }
         command.execute();
+        command.doAfter();
         log.info("Resolved "+command.toString());
     }
 

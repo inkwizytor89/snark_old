@@ -1,6 +1,6 @@
 package org.enoch.snark.common;
 
-import org.enoch.snark.model.TargetPlanet;
+import org.enoch.snark.model.Planet;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -11,11 +11,11 @@ import java.util.stream.Stream;
 
 public class PlanetFromFileReader {
 
-    public static List<TargetPlanet> get(String pathtoFile){
+    public static List<Planet> get(String pathtoFile){
         try (Stream<String> stream = Files.lines(Paths.get(pathtoFile))) {
 
             return stream
-                    .map(TargetPlanet::new)
+                    .map(Planet::new)
                     .collect(Collectors.toList());
 
         } catch (IOException e) {

@@ -1,6 +1,6 @@
 package org.enoch.snark.model;
 
-public abstract class Planet {
+public class Planet {
     public static final Integer GALAXY_INDEX = 1;
     public static final Integer SYSTEM_INDEX = 2;
     public static final Integer POSITION_INDEX = 3;
@@ -9,6 +9,9 @@ public abstract class Planet {
     protected Integer position;
 
     protected Planet() {
+    }
+    public Planet(String input) {
+        loadPlanetCoordinate(input);
     }
 
     public Integer calculateDistance(Planet planet) {
@@ -26,7 +29,7 @@ public abstract class Planet {
     }
 
     protected void loadPlanetCoordinate(String coordinateString) {
-        String[] numbersTable = coordinateString.split("\\D");
+        String[] numbersTable = coordinateString.split("\\D+");
         galaxy = new Integer(numbersTable[GALAXY_INDEX]);
         system = new Integer(numbersTable[SYSTEM_INDEX]);
         position = new Integer(numbersTable[POSITION_INDEX]);

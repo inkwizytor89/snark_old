@@ -1,5 +1,6 @@
 package org.enoch.snark.common;
 
+import org.enoch.snark.model.Planet;
 import org.enoch.snark.model.TargetPlanet;
 import org.junit.Test;
 
@@ -15,7 +16,7 @@ public class PlanetFromFileReaderTest {
     @Test
     public void get() {
 
-        final List<TargetPlanet> targetPlanets = PlanetFromFileReader.get(PATH_TO_TEST_RESOURCE+"FarmModule/targets.txt");
+        final List<Planet> targetPlanets = PlanetFromFileReader.get(PATH_TO_TEST_RESOURCE+"FarmModule/targets.txt");
 
         assertEquals(4, targetPlanets.size());
     }

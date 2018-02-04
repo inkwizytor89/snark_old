@@ -1,16 +1,17 @@
 package org.enoch.snark.module.farm;
 
 import org.enoch.snark.common.PlanetFromFileReader;
-import org.enoch.snark.gi.Commander;
-import org.enoch.snark.gi.command.SpyCommand;
-import org.enoch.snark.model.TargetPlanet;
+import org.enoch.snark.model.Planet;
+import org.enoch.snark.model.SpyInfo;
 import org.enoch.snark.module.AbstractModule;
 import org.enoch.snark.module.ModuleStatus;
+import org.enoch.snark.gi.command.request.SpyReportWaiter;
+import org.enoch.snark.gi.command.request.SpyRequest;
 
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
-public class FarmModule extends AbstractModule {
+public class FarmModule extends AbstractModule implements SpyReportWaiter {
 
     public FarmModule() {
         this.priority = 2.0;
@@ -22,9 +23,12 @@ public class FarmModule extends AbstractModule {
         setStatus(ModuleStatus.IN_PROGRESS);
 
         System.out.println("cos sie dzieje");
-        List<TargetPlanet> targets = PlanetFromFileReader.get("src/main/resources/FarmModule/targets.txt");
-        for(TargetPlanet target : targets) {
-            Commander.push(new SpyCommand(target));
-        }
+        List<Planet> targets = PlanetFromFileReader.get("src/main/resources/FarmModule/targets.txt");
+        new SpyRequest(targets, this, 300);
+    }
+
+    @Override
+    public void saveSpyReport(Collection<SpyInfo> values) {
+
     }
 }
