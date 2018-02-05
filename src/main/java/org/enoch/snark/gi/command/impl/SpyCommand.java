@@ -2,9 +2,12 @@ package org.enoch.snark.gi.command.impl;
 
 import org.enoch.snark.gi.GIUrlBuilder;
 import org.enoch.snark.gi.command.GICommand;
+import org.enoch.snark.gi.macro.Fleet;
+import org.enoch.snark.gi.macro.FleetSelector;
 import org.enoch.snark.model.Planet;
 import org.enoch.snark.model.SourcePlanet;
 import org.enoch.snark.model.Universum;
+import org.openqa.selenium.By;
 
 import static org.enoch.snark.gi.GIUrlBuilder.PAGE_BASE_FLEET;
 import static org.enoch.snark.gi.command.CommandType.FLEET_REQUIERED;
@@ -27,6 +30,10 @@ public class SpyCommand extends GICommand {
                 .setTarget(target)
                 .setPage(PAGE_BASE_FLEET);
         selenium.open(builder.build());
+        new FleetSelector().type(Fleet.SON, 1);
+        selenium.click("continue");
+
+        final String duration = chromeDriver.findElement(By.id("duration")).getText(); // format: 0:00:19 h
         System.out.println();
     }
 }

@@ -20,7 +20,7 @@ public class GIUrlBuilder {
         final StringBuilder builder = new StringBuilder();
         builder.append(AppProperties.mainUrl).append("?")
                 .append("page=").append(page)
-                .append("&cp0").append(planet.planetId);
+                .append("&cp=").append(planet.planetId);
         if(target != null) {
             builder.append("&galaxy="+target.galaxy+
                     "&system="+target.system+

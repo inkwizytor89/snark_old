@@ -4,6 +4,7 @@ import com.thoughtworks.selenium.Selenium;
 import com.thoughtworks.selenium.webdriven.WebDriverBackedSelenium;
 import org.enoch.snark.AppProperties;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 
 import static org.enoch.snark.PropertyNames.WEBDRIVER_CHROME_DRIVER;
@@ -34,7 +35,11 @@ public class GISession {
     }
 
     private void logIn() {
-        chromeDriver.findElement(By.id("loginBtn")).click();
+        final WebElement loginBtn = chromeDriver.findElement(By.id("loginBtn"));
+        if(loginBtn.isDisplayed()) {
+            chromeDriver.findElementByLinkText("x").click();
+        }
+        loginBtn.click();
         chromeDriver.findElement(By.id("usernameLogin")).click();
         selenium.type("id=usernameLogin", AppProperties.username);
         selenium.type("id=passwordLogin", AppProperties.password);
