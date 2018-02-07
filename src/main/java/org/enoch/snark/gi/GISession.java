@@ -2,12 +2,12 @@ package org.enoch.snark.gi;
 
 import com.thoughtworks.selenium.Selenium;
 import com.thoughtworks.selenium.webdriven.WebDriverBackedSelenium;
-import org.enoch.snark.AppProperties;
+import org.enoch.snark.instance.AppProperties;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 
-import static org.enoch.snark.PropertyNames.WEBDRIVER_CHROME_DRIVER;
+import static org.enoch.snark.instance.PropertyNames.WEBDRIVER_CHROME_DRIVER;
 
 public class GISession {
 
@@ -15,16 +15,18 @@ public class GISession {
     private final Selenium selenium;
 
     private boolean isLoggedIn = false;
+    private AppProperties appProperties;
 
 
-    GISession() {
+    public GISession(AppProperties appProperties) {
+        this.appProperties = appProperties;
         System.setProperty(WEBDRIVER_CHROME_DRIVER, AppProperties.pathToChromeWebdriver);
         chromeDriver = new ChromeDriver();
-        selenium = new WebDriverBackedSelenium(chromeDriver, AppProperties.loginUrl);
+        selenium = new WebDriverBackedSelenium(chromeDriver, appProperties.loginUrl);
     }
 
     public void open() {
-        selenium.open(AppProperties.loginUrl);
+        selenium.open(appProperties.loginUrl);
         logIn();
     }
 
@@ -41,9 +43,9 @@ public class GISession {
         }
         loginBtn.click();
         chromeDriver.findElement(By.id("usernameLogin")).click();
-        selenium.type("id=usernameLogin", AppProperties.username);
-        selenium.type("id=passwordLogin", AppProperties.password);
-        selenium.type("id=serverLogin", AppProperties.server);
+        selenium.type("id=usernameLogin", appProperties.username);
+        selenium.type("id=passwordLogin", appProperties.password);
+        selenium.type("id=serverLogin", appProperties.server);
         chromeDriver.findElement(By.id("loginSubmit")).click();
 
         isLoggedIn = true;

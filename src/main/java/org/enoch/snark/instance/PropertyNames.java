@@ -1,4 +1,4 @@
-package org.enoch.snark;
+package org.enoch.snark.instance;
 
 public class PropertyNames {
     public static final String USER_NAME_LOGIN = "usernameLogin";

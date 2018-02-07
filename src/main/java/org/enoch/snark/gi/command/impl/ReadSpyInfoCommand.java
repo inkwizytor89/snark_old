@@ -2,6 +2,7 @@ package org.enoch.snark.gi.command.impl;
 
 import org.enoch.snark.gi.command.AbstractCommand;
 import org.enoch.snark.gi.command.SpyObserver;
+import org.enoch.snark.instance.Universum;
 import org.enoch.snark.model.Planet;
 import org.enoch.snark.model.SpyInfo;
 
@@ -12,8 +13,8 @@ public class ReadSpyInfoCommand extends AbstractCommand {
     private Planet planet;
     private SpyObserver observer;
 
-    public ReadSpyInfoCommand(Planet planet, SpyObserver observer) {
-        super(INTERFACE_REQUIERED);
+    public ReadSpyInfoCommand(Universum universum, Planet planet, SpyObserver observer) {
+        super(universum, INTERFACE_REQUIERED);
         this.planet = planet;
         this.observer = observer;
     }

@@ -1,6 +1,7 @@
 package org.enoch.snark.gi.command;
 
 import org.enoch.snark.gi.Commander;
+import org.enoch.snark.instance.Universum;
 
 import java.util.concurrent.TimeUnit;
 
@@ -8,9 +9,11 @@ public abstract class AbstractCommand {
 
     private AbstractCommand afterCommand;
     private int secoundToDelay;
-    private CommandType type = CommandType.CALCULATION;
+    protected Universum universum;
+    private CommandType type;
 
-    protected AbstractCommand(CommandType type) {
+    protected AbstractCommand(Universum universum, CommandType type) {
+        this.universum = universum;
         this.type = type;
     }
 
@@ -26,7 +29,7 @@ public abstract class AbstractCommand {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            Commander.push(afterCommand);
+            universum.commander.push(afterCommand);
         };
 
         new Thread(task).start();

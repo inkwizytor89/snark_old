@@ -1,4 +1,4 @@
-package org.enoch.snark;
+package org.enoch.snark.instance;
 
 import org.enoch.snark.model.SourcePlanet;
 
@@ -8,24 +8,24 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
-import static org.enoch.snark.PropertyNames.*;
-import static org.enoch.snark.PropertyNames.PLANET_IDS;
+import static org.enoch.snark.instance.PropertyNames.*;
+import static org.enoch.snark.instance.PropertyNames.PLANET_IDS;
 
 public class AppProperties {
 
-    public static String username;
-    public static String password;
-    public static String server;
+    public String username;
+    public String password;
+    public String server;
 
-    public static String loginUrl;
-    public static String mainUrl;
+    public String loginUrl;
+    public String mainUrl;
 
-    public static Integer fleetNumber;
-    public static List<SourcePlanet> sourcePlanets = new ArrayList<>();
+    public Integer fleetNumber;
+    public List<SourcePlanet> sourcePlanets = new ArrayList<>();
 
     public static String pathToChromeWebdriver;
 
-    public static void loadApplicationProperties(String pathToProperties) throws IOException {
+    AppProperties(String pathToProperties) throws IOException {
         Properties properties = new java.util.Properties();
         FileInputStream fileInputStream = new FileInputStream(pathToProperties);
         properties.load(fileInputStream);

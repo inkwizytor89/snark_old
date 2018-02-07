@@ -1,6 +1,6 @@
 package org.enoch.snark.gi;
 
-import org.enoch.snark.AppProperties;
+import org.enoch.snark.instance.AppProperties;
 import org.enoch.snark.model.Planet;
 import org.enoch.snark.model.SourcePlanet;
 
@@ -10,15 +10,17 @@ public class GIUrlBuilder {
     public static final String PAGE_BASE_FLEET = "fleet1";
 
     private String page=PAGE_OVERVIEW;
+    private AppProperties appProperties;
     private SourcePlanet planet;
     private Planet target;
 
-    public GIUrlBuilder(SourcePlanet planet) {
+    public GIUrlBuilder(AppProperties appProperties, SourcePlanet planet) {
+        this.appProperties = appProperties;
         this.planet = planet;
     }
     public String build() {
         final StringBuilder builder = new StringBuilder();
-        builder.append(AppProperties.mainUrl).append("?")
+        builder.append(appProperties.mainUrl).append("?")
                 .append("page=").append(page)
                 .append("&cp=").append(planet.planetId);
         if(target != null) {

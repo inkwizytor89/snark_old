@@ -1,7 +1,6 @@
-package org.enoch.snark;
+package org.enoch.snark.instance;
 
 import org.enoch.snark.module.AbstractModule;
-import org.enoch.snark.module.explore.ExploreModule;
 import org.enoch.snark.module.farm.FarmModule;
 
 import java.util.Date;
@@ -18,10 +17,11 @@ public class SI {
     Set<AbstractModule> modules = new TreeSet<>();
     private Date nearestActionDate;
     private AbstractModule nearestModule;
+    private Universum universum;
 
-    SI() {
-        modules.add(new FarmModule());
-//        modules.add(new ExploreModule());
+    public SI(Universum universum) {
+        this.universum = universum;
+        modules.add(new FarmModule(universum));
     }
 
     public void run() {

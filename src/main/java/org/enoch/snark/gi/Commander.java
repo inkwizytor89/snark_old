@@ -14,30 +14,16 @@ public class Commander {
 
     private static final int SLEEP_PAUSE = 10;
 
-    private static GISession session;
+    private GISession session;
 
-    private static Queue<AbstractCommand> fleetActionQueue = new LinkedList<>();
-    private static Queue<AbstractCommand> interfaceActionQueue = new LinkedList<>();
-    private static Queue<AbstractCommand> calculationActionQueue = new LinkedList<>();
+    private Queue<AbstractCommand> fleetActionQueue = new LinkedList<>();
+    private Queue<AbstractCommand> interfaceActionQueue = new LinkedList<>();
+    private Queue<AbstractCommand> calculationActionQueue = new LinkedList<>();
 
-    private Commander() {
-        session = new GISession();
+    public Commander(GISession session) {
+        this.session = session;
         startInterfaceQueue();
         startCalculationQueue();
-    }
-
-    public static void createInstance() {
-        new Commander();
-    }
-
-    // TODO: 2018-02-04 remove function and fix GI access
-    @Deprecated
-    public static void setSession(GISession session) {
-        Commander.session = session;
-    }
-
-    public static GISession getSession() {
-        return session;
     }
 
     private void startInterfaceQueue() {
@@ -95,7 +81,7 @@ public class Commander {
         return true;
     }
 
-    public static void push(AbstractCommand command) {
+    public void push(AbstractCommand command) {
         if (CommandType.FLEET_REQUIERED.equals(command.getType())) {
             fleetActionQueue.add(command);
             log.info("Inserted "+command.toString()+" into queue fleetActionQueue size "+fleetActionQueue.size());
