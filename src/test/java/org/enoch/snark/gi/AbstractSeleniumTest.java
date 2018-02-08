@@ -1,6 +1,6 @@
 package org.enoch.snark.gi;
 
-import org.enoch.snark.instance.Universum;
+import org.enoch.snark.instance.Universe;
 import org.enoch.snark.model.Planet;
 import org.junit.After;
 import org.junit.Before;
@@ -12,12 +12,12 @@ public class AbstractSeleniumTest {
     static final String CONFIG_FILE_NAME = "application.properties";
     static final String CONFIG_DIR_NAME = "src/test/resources/";
 
-    protected Universum universum;
+    protected Universe universe;
     protected Planet sampleTarget;
 
     protected AbstractSeleniumTest() {
         try {
-            universum = new Universum(CONFIG_DIR_NAME + CONFIG_FILE_NAME, false);
+            universe = new Universe(CONFIG_DIR_NAME + CONFIG_FILE_NAME, false);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -27,11 +27,11 @@ public class AbstractSeleniumTest {
 
     @Before
     public void setUp() {
-        universum.session.open();
+        universe.session.open();
     }
 
     @After
     public void tearDown() {
-        universum.session.close();
+        universe.session.close();
     }
 }

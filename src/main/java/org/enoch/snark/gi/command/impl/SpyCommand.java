@@ -8,7 +8,7 @@ import org.enoch.snark.gi.macro.FleetSelector;
 import org.enoch.snark.gi.macro.Mission;
 import org.enoch.snark.model.Planet;
 import org.enoch.snark.model.SourcePlanet;
-import org.enoch.snark.instance.Universum;
+import org.enoch.snark.instance.Universe;
 import org.openqa.selenium.By;
 
 import java.time.LocalTime;
@@ -22,14 +22,14 @@ public class SpyCommand extends GICommand {
     private SourcePlanet source;
     private GIUrlBuilder giUrlBuilder;
 
-    public SpyCommand(Universum universum, Planet target) {
-        super(universum, FLEET_REQUIERED);
+    public SpyCommand(Universe universe, Planet target) {
+        super(universe, FLEET_REQUIERED);
 
         this.target = target;
-        this.source = universum.findNearestSource(target);
+        this.source = universe.findNearestSource(target);
 
-        giUrlBuilder = new GIUrlBuilder(universum);
-        fleetSelector = new FleetSelector(universum.session);
+        giUrlBuilder = new GIUrlBuilder(universe);
+        fleetSelector = new FleetSelector(universe.session);
     }
 
     @Override

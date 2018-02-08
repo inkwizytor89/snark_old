@@ -7,17 +7,17 @@ import org.enoch.snark.model.SourcePlanet;
 
 import java.io.IOException;
 
-public class Universum {
+public class Universe {
 
     public final AppProperties appProperties;
     public Commander commander;
     public final GISession session;
 
-    public Universum(String pathToPropertiesFile) throws IOException {
+    public Universe(String pathToPropertiesFile) throws IOException {
         this(pathToPropertiesFile, true);
     }
 
-    public Universum(String pathToPropertiesFile, boolean isQueueEnabled) throws IOException {
+    public Universe(String pathToPropertiesFile, boolean isQueueEnabled) throws IOException {
         appProperties = new AppProperties(pathToPropertiesFile);
 
         session = new GISession(appProperties);

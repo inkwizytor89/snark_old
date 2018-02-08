@@ -1,7 +1,6 @@
 package org.enoch.snark.gi;
 
-import org.enoch.snark.instance.AppProperties;
-import org.enoch.snark.instance.Universum;
+import org.enoch.snark.instance.Universe;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -12,17 +11,17 @@ import static org.junit.Assert.*;
 public class GISessionTest {
 
     private GISession session;
-    private Universum universum;
+    private Universe universe;
 
     @Before
     public void setUp() throws Exception {
-        universum = new Universum(CONFIG_DIR_NAME + CONFIG_FILE_NAME);
+        universe = new Universe(CONFIG_DIR_NAME + CONFIG_FILE_NAME);
 //        AppProperties.loadApplicationProperties(CONFIG_DIR_NAME+CONFIG_FILE_NAME);
     }
 
     @Test
     public void login_when_openSession() {
-        session = universum.session;
+        session = universe.session;
 
         session.open();
 
@@ -32,7 +31,7 @@ public class GISessionTest {
 
     @Test
     public void logout_when_closeSession() {
-        session = universum.session;
+        session = universe.session;
         session.open();
 
         session.close();

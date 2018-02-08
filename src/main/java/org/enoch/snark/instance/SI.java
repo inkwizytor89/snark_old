@@ -17,11 +17,11 @@ public class SI {
     Set<AbstractModule> modules = new TreeSet<>();
     private Date nearestActionDate;
     private AbstractModule nearestModule;
-    private Universum universum;
+    private Universe universe;
 
-    public SI(Universum universum) {
-        this.universum = universum;
-        modules.add(new FarmModule(universum));
+    public SI(Universe universe) {
+        this.universe = universe;
+        modules.add(new FarmModule(universe));
     }
 
     public void run() {

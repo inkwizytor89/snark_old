@@ -1,7 +1,7 @@
 package org.enoch.snark.module.farm;
 
 import org.enoch.snark.common.PlanetFromFileReader;
-import org.enoch.snark.instance.Universum;
+import org.enoch.snark.instance.Universe;
 import org.enoch.snark.model.Planet;
 import org.enoch.snark.model.SpyInfo;
 import org.enoch.snark.module.AbstractModule;
@@ -14,10 +14,10 @@ import java.util.List;
 
 public class FarmModule extends AbstractModule implements SpyReportWaiter {
 
-    private Universum universum;
+    private Universe universe;
 
-    public FarmModule(Universum universum) {
-        this.universum = universum;
+    public FarmModule(Universe universe) {
+        this.universe = universe;
         this.priority = 2.0;
     }
 
@@ -28,7 +28,7 @@ public class FarmModule extends AbstractModule implements SpyReportWaiter {
 
         System.out.println("cos sie dzieje");
         List<Planet> targets = PlanetFromFileReader.get("src/main/resources/FarmModule/targets.txt");
-        new SpyRequest(universum, targets, this, 300);
+        new SpyRequest(universe, targets, this, 300);
     }
 
     @Override

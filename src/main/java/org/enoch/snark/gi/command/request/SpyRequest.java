@@ -3,7 +3,7 @@ package org.enoch.snark.gi.command.request;
 import org.enoch.snark.gi.command.SpyObserver;
 import org.enoch.snark.gi.command.impl.ReadSpyInfoCommand;
 import org.enoch.snark.gi.command.impl.SpyCommand;
-import org.enoch.snark.instance.Universum;
+import org.enoch.snark.instance.Universe;
 import org.enoch.snark.model.Planet;
 import org.enoch.snark.model.SpyInfo;
 
@@ -19,15 +19,15 @@ public class SpyRequest implements SpyObserver{
     private final Map<Planet, SpyInfo> spyReport = new HashMap<>();
     private boolean isNew = true;
 
-    public SpyRequest(Universum universum , List<Planet> targets, SpyReportWaiter waiter, int baseWait) {
+    public SpyRequest(Universe universe, List<Planet> targets, SpyReportWaiter waiter, int baseWait) {
         this.waiter = waiter;
         this.baseWait = baseWait;
         for(Planet target : targets) {
             spyReport.put(target, null);
 
-            final SpyCommand spyCommand = new SpyCommand(universum, target);
-            spyCommand.setAfterCommand(new ReadSpyInfoCommand(universum, target, this));
-            universum.commander.push(spyCommand);
+            final SpyCommand spyCommand = new SpyCommand(universe, target);
+            spyCommand.setAfterCommand(new ReadSpyInfoCommand(universe, target, this));
+            universe.commander.push(spyCommand);
         }
 
         returnSpyReport();

@@ -7,7 +7,7 @@ public class SpyCommandTest extends AbstractSeleniumTest {
 
     @Test
     public void execute() {
-        final SpyCommand command = new SpyCommand(universum, sampleTarget);
+        final SpyCommand command = new SpyCommand(universe, sampleTarget);
 
         command.execute();
     }
