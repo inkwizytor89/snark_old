@@ -7,6 +7,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 
+import java.util.concurrent.TimeUnit;
+
 import static org.enoch.snark.instance.PropertyNames.WEBDRIVER_CHROME_DRIVER;
 
 public class GISession {
@@ -22,6 +24,9 @@ public class GISession {
         this.appProperties = appProperties;
         System.setProperty(WEBDRIVER_CHROME_DRIVER, AppProperties.pathToChromeWebdriver);
         chromeDriver = new ChromeDriver();
+        chromeDriver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+        chromeDriver.manage().timeouts().setScriptTimeout(10, TimeUnit.SECONDS);
+        chromeDriver.manage().timeouts().pageLoadTimeout(15, TimeUnit.SECONDS);
         selenium = new WebDriverBackedSelenium(chromeDriver, appProperties.loginUrl);
     }
 
@@ -54,6 +59,14 @@ public class GISession {
     private void logOut() {
         chromeDriver.findElementByLinkText("Wyloguj").click();
         isLoggedIn = false;
+    }
+
+    public void sleep(TimeUnit timeUnit, int i) {
+        try {
+            timeUnit.sleep(i);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     public boolean isLoggedIn() {

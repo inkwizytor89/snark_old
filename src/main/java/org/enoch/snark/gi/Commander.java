@@ -92,7 +92,7 @@ public class Commander {
             calculationActionQueue.add(command);
             log.info("Inserted "+command.toString()+" into queue calculationActionQueue size "+calculationActionQueue.size());
         }else {
-            throw new RuntimeException("Invalid type of command");
+            throw new RuntimeException("Invalid typeShip of command");
         }
     }
 }

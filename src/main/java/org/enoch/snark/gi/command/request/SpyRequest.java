@@ -1,6 +1,5 @@
 package org.enoch.snark.gi.command.request;
 
-import org.enoch.snark.gi.Commander;
 import org.enoch.snark.gi.command.SpyObserver;
 import org.enoch.snark.gi.command.impl.ReadSpyInfoCommand;
 import org.enoch.snark.gi.command.impl.SpyCommand;

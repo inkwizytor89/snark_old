@@ -10,14 +10,20 @@ import java.io.IOException;
 public class Universum {
 
     public final AppProperties appProperties;
-    public final Commander commander;
+    public Commander commander;
     public final GISession session;
 
     public Universum(String pathToPropertiesFile) throws IOException {
+        this(pathToPropertiesFile, true);
+    }
+
+    public Universum(String pathToPropertiesFile, boolean isQueueEnabled) throws IOException {
         appProperties = new AppProperties(pathToPropertiesFile);
 
         session = new GISession(appProperties);
-        commander = new Commander(session);
+        if(isQueueEnabled) {
+            commander = new Commander(session);
+        }
     }
 
     public void runSI() {

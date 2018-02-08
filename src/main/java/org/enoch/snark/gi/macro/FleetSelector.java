@@ -2,22 +2,29 @@ package org.enoch.snark.gi.macro;
 
 import com.thoughtworks.selenium.Selenium;
 import org.enoch.snark.gi.GISession;
-import org.openqa.selenium.chrome.ChromeDriver;
+
+import java.util.concurrent.TimeUnit;
 
 public class FleetSelector {
 
-    protected final GISession session;
-    protected final ChromeDriver chromeDriver;
-    protected final Selenium selenium;
+    private final Selenium selenium;
+    private final GISession session;
 
     public FleetSelector(GISession session){
         this.session = session;
-        chromeDriver = this.session.getChromeDriver();
-        selenium = this.session.getSelenium();
+        selenium = session.getSelenium();
     }
 
-    public FleetSelector type(Fleet fleet, Integer count) {
+    public void typeShip(Fleet fleet, Integer count) {
         selenium.type(fleet.getId(), count.toString());
-        return this;
+    }
+
+    public void next() {
+        selenium.click("continue");
+    }
+
+    public void start() {
+        session.sleep(TimeUnit.SECONDS, 2);
+        selenium.click("start");
     }
 }
