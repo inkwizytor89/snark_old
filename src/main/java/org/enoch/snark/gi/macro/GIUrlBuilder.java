@@ -1,4 +1,4 @@
-package org.enoch.snark.gi;
+package org.enoch.snark.gi.macro;
 
 import org.enoch.snark.gi.macro.Mission;
 import org.enoch.snark.instance.Universe;
@@ -9,6 +9,7 @@ public class GIUrlBuilder {
 
     private static final String PAGE_OVERVIEW = "overview";
     private static final String PAGE_BASE_FLEET = "fleet1";
+    private static final String PAGE_MESSAGES = "messages";
 
     private Universe universe;
 
@@ -24,6 +25,12 @@ public class GIUrlBuilder {
                 "&system=" + target.system +
                 "&position=" + target.position +
                 "&type=1&mission=" + mission.getValue();
+        universe.session.getSelenium().open(builder);
+    }
+
+    public void openMessages() {
+        String builder = universe.appProperties.mainUrl + "?" +
+                "page=" + PAGE_MESSAGES;
         universe.session.getSelenium().open(builder);
     }
 }

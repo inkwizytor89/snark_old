@@ -1,7 +1,7 @@
 package org.enoch.snark.gi.command.impl;
 
 import org.enoch.snark.common.DateUtil;
-import org.enoch.snark.gi.GIUrlBuilder;
+import org.enoch.snark.gi.macro.GIUrlBuilder;
 import org.enoch.snark.gi.command.GICommand;
 import org.enoch.snark.gi.macro.Fleet;
 import org.enoch.snark.gi.macro.FleetSelector;
