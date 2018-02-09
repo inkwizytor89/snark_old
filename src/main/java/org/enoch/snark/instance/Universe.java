@@ -9,17 +9,18 @@ import org.enoch.snark.model.SourcePlanet;
 import java.io.IOException;
 
 public class Universe {
+    public static final String CONFIG_FILE_NAME = "/application.properties";
 
     public final AppProperties appProperties;
     public Commander commander;
     public final GISession session;
 
-    public Universe(String pathToPropertiesFile) throws IOException {
-        this(pathToPropertiesFile, true);
+    public Universe(String pathToMainDir) throws IOException {
+        this(pathToMainDir, true);
     }
 
-    public Universe(String pathToPropertiesFile, boolean isQueueEnabled) throws IOException {
-        appProperties = new AppProperties(pathToPropertiesFile);
+    public Universe(String pathToMainDir, boolean isQueueEnabled) throws IOException {
+        appProperties = new AppProperties(pathToMainDir+CONFIG_FILE_NAME);
 //        new MessageService();
         session = new GISession(appProperties);
         if(isQueueEnabled) {

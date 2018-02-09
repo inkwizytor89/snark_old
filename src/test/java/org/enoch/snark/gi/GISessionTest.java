@@ -4,8 +4,6 @@ import org.enoch.snark.instance.Universe;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.enoch.snark.gi.AbstractSeleniumTest.CONFIG_DIR_NAME;
-import static org.enoch.snark.gi.AbstractSeleniumTest.CONFIG_FILE_NAME;
 import static org.junit.Assert.*;
 
 public class GISessionTest {
@@ -14,9 +12,8 @@ public class GISessionTest {
     private Universe universe;
 
     @Before
-    public void setUp() throws Exception {
-        universe = new Universe(CONFIG_DIR_NAME + CONFIG_FILE_NAME);
-//        AppProperties.loadApplicationProperties(CONFIG_DIR_NAME+CONFIG_FILE_NAME);
+    public void setUp() {
+        universe = AbstractSeleniumTest.creatTestInstance();
     }
 
     @Test

@@ -8,14 +8,13 @@ import java.util.Objects;
 
 public class Main {
 
-    public static final String CONFIG_FILE_NAME = "application.properties";
-    public static final String CONFIG_DIR_NAME = "data/";
+    public static final String DATA_DIR_NAME = "data/";
 
     public static void main(String[] args) throws IOException {
-        final File data = new File(CONFIG_DIR_NAME);
-        for(File dir : Objects.requireNonNull(data.listFiles())) {
-            if(dir.isDirectory()){
-                Runnable task = new Universe(dir.getAbsolutePath() + CONFIG_FILE_NAME)::runSI;
+        final File data = new File(DATA_DIR_NAME);
+        for(File accountDir : Objects.requireNonNull(data.listFiles())) {
+            if(accountDir.isDirectory()){
+                Runnable task = new Universe(accountDir.getAbsolutePath())::runSI;
                 new Thread(task).start();
             }
         }
