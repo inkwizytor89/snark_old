@@ -20,7 +20,7 @@ public class Universe {
 
     public Universe(String pathToPropertiesFile, boolean isQueueEnabled) throws IOException {
         appProperties = new AppProperties(pathToPropertiesFile);
-        new MessageService();
+//        new MessageService();
         session = new GISession(appProperties);
         if(isQueueEnabled) {
             commander = new Commander(session);

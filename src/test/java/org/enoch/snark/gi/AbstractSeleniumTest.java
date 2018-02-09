@@ -7,10 +7,10 @@ import org.junit.Before;
 
 import java.io.IOException;
 
-public class AbstractSeleniumTest {
+import static org.enoch.snark.Main.CONFIG_DIR_NAME;
+import static org.enoch.snark.Main.CONFIG_FILE_NAME;
 
-    static final String CONFIG_FILE_NAME = "application.properties";
-    static final String CONFIG_DIR_NAME = "src/test/resources/";
+public class AbstractSeleniumTest {
 
     protected Universe universe;
     protected Planet sampleTarget;
