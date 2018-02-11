@@ -9,30 +9,37 @@ import org.enoch.snark.module.ModuleStatus;
 import org.enoch.snark.gi.command.request.SpyReportWaiter;
 import org.enoch.snark.gi.command.request.SpyRequest;
 
+import java.io.File;
 import java.util.Collection;
 import java.util.List;
 
 public class FarmModule extends AbstractModule implements SpyReportWaiter {
 
+    private final File targetsFile;
     private Universe universe;
 
     public FarmModule(Universe universe) {
         this.universe = universe;
-        this.priority = 2.0;
+        this.priority = universe.appProperties.farmModule;
+        targetsFile = new File(universe.pathToMainDir + "\\farm\\targets.txt");
     }
 
     @Override
     public void run() {
-
         setStatus(ModuleStatus.IN_PROGRESS);
-
-        System.out.println("cos sie dzieje");
-        List<Planet> targets = PlanetFromFileReader.get("src/main/resources/FarmModule/targets.txt");
+        List<Planet> targets = PlanetFromFileReader.get(targetsFile.getAbsolutePath());
+        System.err.println("Do szukania:");
+        for (Planet planet : targets) {
+            System.err.println(planet);
+        }
         new SpyRequest(universe, targets, this, 300);
     }
 
     @Override
     public void saveSpyReport(Collection<SpyInfo> values) {
-
+        for (SpyInfo info : values) {
+            System.err.println(info);
+        }
+        setStatus(ModuleStatus.WAITING);
     }
 }

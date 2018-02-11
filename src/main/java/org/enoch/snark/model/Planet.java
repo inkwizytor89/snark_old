@@ -36,7 +36,20 @@ public class Planet {
     }
 
     @Override
+    public boolean equals(Object obj) {
+        if(!(obj instanceof Planet)) return false;
+
+        final String string = this.toString();
+        Planet anotherPlanet = (Planet) obj;
+        return this.galaxy.equals(anotherPlanet.galaxy) && this.system.equals(anotherPlanet.system) && this.position.equals(anotherPlanet.position);
+    }
+
+    @Override
     public String toString() {
         return "["+galaxy+":"+system+":"+position+"]";
     }
+    public String toFileName() {
+        return toString().replace(":","_");
+    }
+
 }

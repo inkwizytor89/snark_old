@@ -2,7 +2,9 @@ package org.enoch.snark.gi;
 
 import com.thoughtworks.selenium.Selenium;
 import com.thoughtworks.selenium.webdriven.WebDriverBackedSelenium;
+import org.enoch.snark.gi.macro.GIUrlBuilder;
 import org.enoch.snark.instance.AppProperties;
+import org.enoch.snark.instance.Universe;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -15,13 +17,15 @@ public class GISession {
 
     private final ChromeDriver chromeDriver;
     private final Selenium selenium;
+    private final Universe universe;
 
     private boolean isLoggedIn = false;
     private AppProperties appProperties;
 
 
-    public GISession(AppProperties appProperties) {
-        this.appProperties = appProperties;
+    public GISession(Universe universe) {
+        this.universe = universe;
+        appProperties = universe.appProperties;
         System.setProperty(WEBDRIVER_CHROME_DRIVER, AppProperties.pathToChromeWebdriver);
         chromeDriver = new ChromeDriver();
         chromeDriver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
@@ -37,8 +41,8 @@ public class GISession {
 
     public void close() {
         logOut();
-        selenium.close();
-        chromeDriver.quit();
+//        selenium.close();
+//        chromeDriver.quit();
     }
 
     private void logIn() {
@@ -57,6 +61,7 @@ public class GISession {
     }
 
     private void logOut() {
+        new GIUrlBuilder(universe).openOverview();
         chromeDriver.findElementByLinkText("Wyloguj").click();
         isLoggedIn = false;
     }

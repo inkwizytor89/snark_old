@@ -12,6 +12,7 @@ import org.enoch.snark.instance.Universe;
 import org.openqa.selenium.By;
 
 import java.time.LocalTime;
+import java.util.concurrent.TimeUnit;
 
 import static org.enoch.snark.gi.command.CommandType.FLEET_REQUIERED;
 
@@ -38,11 +39,17 @@ public class SpyCommand extends GICommand {
         fleetSelector.typeShip(Fleet.SON, 1);
         fleetSelector.next();
 
+        universe.session.sleep(TimeUnit.SECONDS, 2);
         final String duration = chromeDriver.findElement(By.id("duration")).getText();
         final LocalTime time = DateUtil.parse(duration);
-        setSecoundToDelay(time.toSecondOfDay());
+        setSecoundToDelay(time.toSecondOfDay()+ 5);
         fleetSelector.next();
 
         fleetSelector.start();
+    }
+
+    @Override
+    public String toString() {
+        return "spy "+target+" form "+source;
     }
 }

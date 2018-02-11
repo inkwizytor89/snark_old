@@ -18,7 +18,7 @@ public class AppProperties {
     private final String sleep;
     private final int galaxyNumber;
     private final int defenseModule;
-    private final int farmModule;
+    public final int farmModule;
     private final int aggressionModule;
     private final int expeditionModule;
     private final int researchModule;

@@ -3,8 +3,10 @@ package org.enoch.snark.gi.command;
 import org.enoch.snark.instance.Universe;
 
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Logger;
 
 public abstract class AbstractCommand {
+    protected static final Logger log = Logger.getLogger( AbstractCommand.class.getName() );
 
     private AbstractCommand afterCommand;
     private int secoundToDelay;
@@ -32,6 +34,10 @@ public abstract class AbstractCommand {
 
     protected void setSecoundToDelay(int secoundToDelay) {
         this.secoundToDelay = secoundToDelay;
+    }
+
+    public AbstractCommand getAfterCommand() {
+        return afterCommand;
     }
 
     public void setAfterCommand(AbstractCommand afterCommand) {

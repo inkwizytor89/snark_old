@@ -7,7 +7,7 @@ import java.util.Date;
 public class ExploreModule extends AbstractModule {
 
     public ExploreModule() {
-        this.priority = 1.0;
+        this.priority = 0;
     }
 
     @Override

@@ -12,6 +12,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import static org.enoch.snark.gi.command.CommandType.INTERFACE_REQUIERED;
 
@@ -30,11 +31,25 @@ public class ReadSpyInfoCommand extends AbstractCommand {
 
     @Override
     public void execute() {
-        new GIUrlBuilder(universe).openMessages();
+        SpyInfo lastSpyInfo = universe.messageService.getLastSpyInfo(planet);
+
+        if(lastSpyInfo == null || !lastSpyInfo.isStillAvailable(10)) {
+            new GIUrlBuilder(universe).openMessages();
+            universe.session.sleep(TimeUnit.SECONDS, 5);
+
+            List<String> spyReports = loadMessagesLinks();
+            universe.messageService.storeSpyMessage(spyReports);
+            lastSpyInfo = universe.messageService.getLastSpyInfo(planet);
+        }
+
+        if(observer!= null) {
+            observer.report(lastSpyInfo);
+        }
+    }
+
+    private List<String> loadMessagesLinks() {
         final ChromeDriver chromeDriver = universe.session.getChromeDriver();
-//        final List<WebElement> overlay = chromeDriver.findElementsByClassName("fright txt_link msg_action_link overlay");
         final List<WebElement> elements = chromeDriver.findElements(By.tagName("a"));
-        final String[] links = universe.session.getSelenium().getAllLinks();
         List<String> spyReports = new ArrayList<>();
         for (WebElement element : elements) {
             final String href = element.getAttribute("href");
@@ -42,12 +57,11 @@ public class ReadSpyInfoCommand extends AbstractCommand {
                 spyReports.add(href);
             }
         }
+        return spyReports;
+    }
 
-        SpyInfo info = new SpyInfo();
-        info.planet = planet;
-
-        if(observer!= null) {
-            observer.report(info);
-        }
+    @Override
+    public String toString() {
+        return "load spy message from "+planet;
     }
 }

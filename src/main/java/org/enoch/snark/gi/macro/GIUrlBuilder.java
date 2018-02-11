@@ -33,4 +33,10 @@ public class GIUrlBuilder {
                 "page=" + PAGE_MESSAGES;
         universe.session.getSelenium().open(builder);
     }
+
+    public void openOverview() {
+        String builder = universe.appProperties.mainUrl + "?" +
+                "page=" + PAGE_OVERVIEW;
+        universe.session.getSelenium().open(builder);
+    }
 }

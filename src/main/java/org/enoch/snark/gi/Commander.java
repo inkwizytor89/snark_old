@@ -38,7 +38,7 @@ public class Commander {
                     continue;
                 }
 
-                if(session.isLoggedIn())    session.close();
+//                if(session.isLoggedIn())    session.close();
                 try {
                     TimeUnit.SECONDS.sleep(SLEEP_PAUSE);
                 } catch (InterruptedException e) {
@@ -73,7 +73,7 @@ public class Commander {
         }
         command.execute();
         command.doAfter();
-        log.info("Resolved "+command.toString());
+        log.info("Executed "+command+ " prepare "+ command.getAfterCommand());
     }
 
     private boolean isFreeFleetSlot() {

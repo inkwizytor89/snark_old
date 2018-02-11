@@ -9,7 +9,7 @@ public abstract class AbstractModule implements Comparable<AbstractModule> {
 
     protected Date readyOn = new Date();
     private ModuleStatus status = ModuleStatus.WAITING;
-    protected Double priority = 0.0;
+    protected Integer priority = 1000;
     private String name = this.getClass().getName();
 
     @Override

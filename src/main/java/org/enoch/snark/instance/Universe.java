@@ -12,17 +12,20 @@ public class Universe {
     public static final String CONFIG_FILE_NAME = "/application.properties";
 
     public final AppProperties appProperties;
+    public final MessageService messageService;
     public Commander commander;
     public final GISession session;
+    public String pathToMainDir;
 
     public Universe(String pathToMainDir) throws IOException {
         this(pathToMainDir, true);
     }
 
     public Universe(String pathToMainDir, boolean isQueueEnabled) throws IOException {
-        appProperties = new AppProperties(pathToMainDir+CONFIG_FILE_NAME);
-//        new MessageService();
-        session = new GISession(appProperties);
+        this.pathToMainDir = pathToMainDir;
+        appProperties = new AppProperties(pathToMainDir +CONFIG_FILE_NAME);
+        messageService = new MessageService(this);
+        session = new GISession(this);
         if(isQueueEnabled) {
             commander = new Commander(session);
         }
