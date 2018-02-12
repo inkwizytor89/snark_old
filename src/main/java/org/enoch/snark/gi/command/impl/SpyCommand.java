@@ -39,13 +39,18 @@ public class SpyCommand extends GICommand {
         fleetSelector.typeShip(Fleet.SON, 1);
         fleetSelector.next();
 
-        universe.session.sleep(TimeUnit.SECONDS, 2);
+        universe.session.sleep(TimeUnit.SECONDS, 1);
         final String duration = chromeDriver.findElement(By.id("duration")).getText();
         final LocalTime time = DateUtil.parse(duration);
         setSecoundToDelay(time.toSecondOfDay()+ 5);
+        universe.session.sleep(TimeUnit.SECONDS, 1);
         fleetSelector.next();
 
-        fleetSelector.start();
+        universe.session.sleep(TimeUnit.SECONDS, 1);
+        final boolean isStartCorrect = fleetSelector.start();
+        if(!isStartCorrect) {
+            System.out.println("error");
+        }
     }
 
     @Override

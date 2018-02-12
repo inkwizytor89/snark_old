@@ -32,6 +32,7 @@ public class GISession {
         chromeDriver.manage().timeouts().setScriptTimeout(10, TimeUnit.SECONDS);
         chromeDriver.manage().timeouts().pageLoadTimeout(15, TimeUnit.SECONDS);
         selenium = new WebDriverBackedSelenium(chromeDriver, appProperties.loginUrl);
+        open();
     }
 
     public void open() {

@@ -12,6 +12,7 @@ public abstract class AbstractCommand {
     private int secoundToDelay;
     protected Universe universe;
     private CommandType type;
+    public int failed = 0;
 
     protected AbstractCommand(Universe universe, CommandType type) {
         this.universe = universe;
