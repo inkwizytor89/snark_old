@@ -2,6 +2,8 @@ package org.enoch.snark.gi;
 
 import org.enoch.snark.gi.command.AbstractCommand;
 import org.enoch.snark.gi.command.CommandType;
+import org.enoch.snark.gi.command.impl.PauseCommand;
+import org.enoch.snark.instance.Universe;
 
 import java.util.LinkedList;
 import java.util.Queue;
@@ -19,9 +21,11 @@ public class Commander {
     private Queue<AbstractCommand> fleetActionQueue = new LinkedList<>();
     private Queue<AbstractCommand> interfaceActionQueue = new LinkedList<>();
     private Queue<AbstractCommand> calculationActionQueue = new LinkedList<>();
+    private Universe universe;
 
-    public Commander(GISession session) {
-        this.session = session;
+    public Commander(Universe universe) {
+        this.universe = universe;
+        this.session = universe.session;
         startInterfaceQueue();
         startCalculationQueue();
     }
@@ -71,7 +75,12 @@ public class Commander {
         if(command.requiredGI() && !session.isLoggedIn()) {
             session.open();
         }
-        command.execute();
+        try {
+            command.execute();
+        }catch (Exception e) {
+            e.printStackTrace();
+            push(new PauseCommand(universe, command, 120));
+        }
         command.doAfter();
         log.info("Executed "+command+ " prepare "+ command.getAfterCommand());
     }

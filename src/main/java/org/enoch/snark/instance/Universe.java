@@ -27,7 +27,7 @@ public class Universe {
         messageService = new MessageService(this);
         session = new GISession(this);
         if(isQueueEnabled) {
-            commander = new Commander(session);
+            commander = new Commander(this);
         }
     }
 
