@@ -9,13 +9,17 @@ import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-public class SpyInfo {
-    public final File file;
+public class SpyInfo implements Comparable  {
+
+    public File file;
     public String messageId;
     public Planet planet;
+    public SourcePlanet source;
+
     public Long metal = 0L;
     public Long crystal = 0L;
     public Long deuterium = 0L;
+    public Long resourcePoint=0L;
     public Long power = 0L;
     public LocalDateTime date;
 
@@ -29,6 +33,12 @@ public class SpyInfo {
         }
         loadResources(content);
     }
+
+    public SpyInfo(Planet planet) {
+        this.planet = planet;
+        this.file = null;
+    }
+
     private void loadResources(String content) {
         final String[] reportLines = content.split("\\R+");
         this.messageId = reportLines[0];
@@ -47,6 +57,7 @@ public class SpyInfo {
                 metal = Long.parseLong(reportLines[i+1].replace(".", ""));
                 crystal = Long.parseLong(reportLines[i+2].replace(".", ""));
                 deuterium = Long.parseLong(reportLines[i+3].replace(".", ""));
+                resourcePoint = metal*2 + crystal*3 + deuterium*6;
                 power = Long.parseLong(reportLines[i+4].replace(".", ""));
                 i+=4;
             }
@@ -57,8 +68,25 @@ public class SpyInfo {
         return date.plusMinutes(minutesOfAvailable).isAfter(LocalDateTime.now());
     }
 
+    public Long getSumResourceCount(){
+        return metal + crystal + deuterium;
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        if (!(o instanceof SpyInfo)) {
+            throw new RuntimeException("Object is not instance of" + this.getClass().getName());
+        }
+
+        SpyInfo anotherInfo =  (SpyInfo) o;
+        Long thisValue = resourcePoint / (source.calculateDistance(planet));
+        Long anotherValue = anotherInfo.resourcePoint / (anotherInfo.source.calculateDistance(anotherInfo.planet));
+        return -thisValue.compareTo(anotherValue);
+    }
+
     @Override
     public String toString() {
-        return file.getName()+" m="+metal+" c="+crystal+" d="+deuterium+" p="+power+" date="+date;
+        final String fileName = file != null ? file.getName() : "Dont Existing planet";
+        return fileName +" m="+metal+" c="+crystal+" d="+deuterium+" p="+power+" date="+date;
     }
 }

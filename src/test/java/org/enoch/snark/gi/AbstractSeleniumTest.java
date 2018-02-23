@@ -38,7 +38,7 @@ public class AbstractSeleniumTest {
 
     @Before
     public void setUp() {
-        universe.session.open();
+//        universe.session.open();
     }
 
     @After

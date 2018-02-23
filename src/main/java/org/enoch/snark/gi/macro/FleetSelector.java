@@ -2,6 +2,10 @@ package org.enoch.snark.gi.macro;
 
 import com.thoughtworks.selenium.Selenium;
 import org.enoch.snark.gi.GISession;
+import org.enoch.snark.model.exception.PlanetDoNotExistException;
+import org.enoch.snark.model.exception.ShipDoNotExists;
+import org.enoch.snark.model.exception.ToStrongPlayerException;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
 import java.util.concurrent.TimeUnit;
@@ -13,24 +17,32 @@ public class FleetSelector {
 
     public FleetSelector(GISession session){
         this.session = session;
-        selenium = session.getSelenium();
+        selenium = session.getSeleniumDriver();
     }
 
-    public void typeShip(Fleet fleet, Integer count) {
-        selenium.type(fleet.getId(), count.toString());
+    public void typeShip(ShipEnum shipEnum, Integer count) {
+        selenium.type(shipEnum.getId(), count.toString());
     }
 
     public void next() {
-        selenium.click("continue");
+        session.sleep(TimeUnit.SECONDS, 1);
+
+        final WebElement continueButton = session.getChromeDriver().findElement(By.id("continue"));
+        if(continueButton.getAttribute("class").equals("off"))
+            throw new ShipDoNotExists();
+        continueButton.click();
     }
 
     public boolean start() {
-        final String tagName = session.getChromeDriver().findElementById("start").getTagName();
-        if(tagName.equals("td")) {
-            return false; //is not button
-        }
         session.sleep(TimeUnit.SECONDS, 2);
-        selenium.click("start");
+        final WebElement startInput = session.getChromeDriver().findElementById("start");
+        if(startInput.getTagName().equals("td")) {
+            throw new PlanetDoNotExistException();
+        }
+        startInput.click();
+        session.sleep(TimeUnit.SECONDS, 1);
+        final WebElement errorBoxDecisionNo = session.getChromeDriver().findElement(By.id("errorBoxDecisionNo"));
+        if(errorBoxDecisionNo.isDisplayed()) throw new ToStrongPlayerException();
         return true;
     }
 }

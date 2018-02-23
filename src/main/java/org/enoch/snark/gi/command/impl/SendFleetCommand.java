@@ -1,21 +1,80 @@
 package org.enoch.snark.gi.command.impl;
 
-import org.enoch.snark.gi.command.AbstractCommand;
+import org.enoch.snark.common.DateUtil;
+import org.enoch.snark.gi.command.GICommand;
+import org.enoch.snark.gi.command.SpyReporter;
+import org.enoch.snark.gi.macro.ShipEnum;
+import org.enoch.snark.gi.macro.FleetSelector;
+import org.enoch.snark.gi.macro.GIUrlBuilder;
+import org.enoch.snark.gi.macro.Mission;
 import org.enoch.snark.instance.Universe;
-import org.enoch.snark.model.FleetBuilder;
+import org.enoch.snark.model.Fleet;
+import org.enoch.snark.model.Planet;
+import org.enoch.snark.model.SourcePlanet;
+import org.enoch.snark.model.SpyInfo;
+import org.enoch.snark.model.exception.PlanetDoNotExistException;
+import org.enoch.snark.model.exception.ToStrongPlayerException;
+import org.openqa.selenium.By;
+
+import java.time.LocalTime;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import static org.enoch.snark.gi.command.CommandType.FLEET_REQUIERED;
 
-public class SendFleetCommand extends AbstractCommand {
+public class SendFleetCommand extends GICommand {
 
-    private final FleetBuilder fleetBuilder;
+    private final FleetSelector fleetSelector;
+    protected Planet target;
+    private Mission mission;
+    protected SourcePlanet source;
+    private GIUrlBuilder giUrlBuilder;
 
-    SendFleetCommand(Universe universe, FleetBuilder fleetBuilder) {
+    private final Fleet fleet;
+
+    public SendFleetCommand(Universe universe, Planet target, Mission mission, Fleet fleet) {
         super(universe, FLEET_REQUIERED);
-        this.fleetBuilder = fleetBuilder;
+
+        this.target = target;
+        this.mission = mission;
+        this.fleet = fleet;
+        this.source = universe.findNearestSource(target);
+
+        giUrlBuilder = new GIUrlBuilder(universe);
+        fleetSelector = new FleetSelector(universe.session);
     }
 
     @Override
-    public void execute() {
+    public boolean execute() {
+        giUrlBuilder.openFleetView(source, target, mission);
+
+        for(Map.Entry<ShipEnum, Integer> entry : fleet.getEntry()) {
+            fleetSelector.typeShip(entry.getKey(), entry.getValue());
+        }
+        fleetSelector.next();
+
+        universe.session.sleep(TimeUnit.SECONDS, 1);
+        final String duration = chromeDriver.findElement(By.id("duration")).getText();
+        final LocalTime time = DateUtil.parse(duration);
+        setSecoundToDelayAfterCommand(time.toSecondOfDay()+ 5);
+        fleetSelector.next();
+
+        try {
+            fleetSelector.start();
+        } catch(PlanetDoNotExistException | ToStrongPlayerException e) {
+            if(getAfterCommand() instanceof SpyReporter) {
+                SpyReporter reporter = (SpyReporter) getAfterCommand();
+                final SpyInfo nonExistingPlanetInfo = new SpyInfo(target);
+                nonExistingPlanetInfo.source = universe.findNearestSource(target);
+                reporter.getSpyObserver().report(nonExistingPlanetInfo);
+            }
+            setAfterCommand(null);
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return mission.name()+" "+target+" form "+source;
     }
 }

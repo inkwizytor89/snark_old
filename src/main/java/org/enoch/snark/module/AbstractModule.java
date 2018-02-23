@@ -1,5 +1,7 @@
 package org.enoch.snark.module;
 
+import org.enoch.snark.instance.Universe;
+
 import java.util.Date;
 import java.util.logging.Logger;
 
@@ -11,6 +13,11 @@ public abstract class AbstractModule implements Comparable<AbstractModule> {
     private ModuleStatus status = ModuleStatus.WAITING;
     protected Integer priority = 1000;
     private String name = this.getClass().getName();
+    protected Universe universe;
+
+    public AbstractModule(Universe universe) {
+        this.universe = universe;
+    }
 
     @Override
     public int compareTo(AbstractModule o) {

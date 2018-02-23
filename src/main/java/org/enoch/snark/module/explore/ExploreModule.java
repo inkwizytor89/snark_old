@@ -1,12 +1,14 @@
 package org.enoch.snark.module.explore;
 
+import org.enoch.snark.instance.Universe;
 import org.enoch.snark.module.AbstractModule;
 
 import java.util.Date;
 
 public class ExploreModule extends AbstractModule {
 
-    public ExploreModule() {
+    public ExploreModule(Universe universe) {
+        super(universe);
         this.priority = 0;
     }
 

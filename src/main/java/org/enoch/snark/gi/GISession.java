@@ -16,8 +16,9 @@ import static org.enoch.snark.instance.PropertyNames.WEBDRIVER_CHROME_DRIVER;
 public class GISession {
 
     private final ChromeDriver chromeDriver;
-    private final Selenium selenium;
+    private final Selenium seleniumDriver;
     private final Universe universe;
+    private final SessionHelper sessionHelper;
 
     private boolean isLoggedIn = false;
     private AppProperties appProperties;
@@ -28,36 +29,25 @@ public class GISession {
         appProperties = universe.appProperties;
         System.setProperty(WEBDRIVER_CHROME_DRIVER, AppProperties.pathToChromeWebdriver);
         chromeDriver = new ChromeDriver();
-        chromeDriver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
-        chromeDriver.manage().timeouts().setScriptTimeout(10, TimeUnit.SECONDS);
-        chromeDriver.manage().timeouts().pageLoadTimeout(15, TimeUnit.SECONDS);
-        selenium = new WebDriverBackedSelenium(chromeDriver, appProperties.loginUrl);
+        seleniumDriver = new WebDriverBackedSelenium(chromeDriver, appProperties.loginUrl);
+        sessionHelper = new SessionHelper(chromeDriver, seleniumDriver);
         open();
     }
 
     public void open() {
-        selenium.open(appProperties.loginUrl);
+        seleniumDriver.open(appProperties.loginUrl);
         logIn();
     }
 
     public void close() {
         logOut();
-//        selenium.close();
+//        seleniumDriver.close();
 //        chromeDriver.quit();
     }
 
     private void logIn() {
-        final WebElement loginBtn = chromeDriver.findElement(By.id("loginBtn"));
-        if(loginBtn.isDisplayed()) {
-            chromeDriver.findElementByLinkText("x").click();
-        }
-        loginBtn.click();
-        chromeDriver.findElement(By.id("usernameLogin")).click();
-        selenium.type("id=usernameLogin", appProperties.username);
-        selenium.type("id=passwordLogin", appProperties.password);
-        selenium.type("id=serverLogin", appProperties.server);
-        chromeDriver.findElement(By.id("loginSubmit")).click();
-
+        sessionHelper.skipBannerIfExists();
+        sessionHelper.insertLoginData(appProperties.username, appProperties.password, appProperties.server);
         isLoggedIn = true;
     }
 
@@ -83,7 +73,7 @@ public class GISession {
         return chromeDriver;
     }
 
-    public Selenium getSelenium() {
-        return selenium;
+    public Selenium getSeleniumDriver() {
+        return seleniumDriver;
     }
 }

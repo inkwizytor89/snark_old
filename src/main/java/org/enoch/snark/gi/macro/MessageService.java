@@ -7,6 +7,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.enoch.snark.instance.Universe;
 import org.enoch.snark.model.Planet;
 import org.enoch.snark.model.SpyInfo;
+import org.enoch.snark.model.WarInfo;
 
 import java.io.File;
 import java.io.PrintWriter;
@@ -29,7 +30,7 @@ public class MessageService {
 
     private Map<String, SpyInfo> spyMesseges = new HashMap<>();
 
-    private ListMultimap<Planet, SpyInfo> warMessageMap = ArrayListMultimap.create();
+    private Map<String, WarInfo> warMessageMap = new HashMap<>();
 
     public MessageService(Universe universe) {
         this.universe = universe;
@@ -58,7 +59,7 @@ public class MessageService {
 
     private void loadSpyFile(File file) {
         final SpyInfo info = new SpyInfo(file);
-        spyMesseges.put(info.messageId, info);
+        if(info.planet != null) spyMesseges.put(info.messageId, info);
     }
 
     public void storeSpyMessage(List<String> links) {
@@ -94,7 +95,7 @@ public class MessageService {
     private File storeAsFile(File dir, String messageId, String link) {
         final File newFile = new File(dir, messageId);
         try {
-            final Selenium selenium = universe.session.getSelenium();
+            final Selenium selenium = universe.session.getSeleniumDriver();
             selenium.open(link);
             String text = messageId +"\n"+selenium.getBodyText();
 

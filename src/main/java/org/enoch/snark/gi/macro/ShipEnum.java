@@ -1,6 +1,6 @@
 package org.enoch.snark.gi.macro;
 
-public enum Fleet {
+public enum ShipEnum {
     LM("id=ship_204"),
     CM("id=ship_205"),
     KR("id=ship_206"),
@@ -17,7 +17,7 @@ public enum Fleet {
 
     private String id;
 
-    Fleet(String id) {
+    ShipEnum(String id) {
         this.id = id;
     }
 

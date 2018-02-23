@@ -6,8 +6,6 @@ import java.io.File;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-import static org.junit.Assert.*;
-
 public class SpyInfoTest {
 
     @Test

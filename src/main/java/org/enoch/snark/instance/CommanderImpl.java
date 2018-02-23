@@ -1,19 +1,19 @@
-package org.enoch.snark.gi;
+package org.enoch.snark.instance;
 
+import org.enoch.snark.gi.GISession;
 import org.enoch.snark.gi.command.AbstractCommand;
 import org.enoch.snark.gi.command.CommandType;
 import org.enoch.snark.gi.command.impl.PauseCommand;
 import org.enoch.snark.gi.macro.GIUrlBuilder;
-import org.enoch.snark.instance.Universe;
 
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
-public class Commander {
+public class CommanderImpl implements Commander {
 
-    private static final Logger log = Logger.getLogger( Commander.class.getName() );
+    private static final Logger log = Logger.getLogger( CommanderImpl.class.getName() );
 
     private static final int SLEEP_PAUSE = 10;
 
@@ -26,7 +26,7 @@ public class Commander {
     private Queue<AbstractCommand> interfaceActionQueue = new LinkedList<>();
     private Queue<AbstractCommand> calculationActionQueue = new LinkedList<>();
 
-    public Commander(Universe universe) {
+    public CommanderImpl(Universe universe) {
         this.universe = universe;
         this.session = universe.session;
         startInterfaceQueue();
@@ -38,11 +38,11 @@ public class Commander {
             while(true) {
 
                 if(!fleetActionQueue.isEmpty() && isFleetFreeSlot()) {
-                    resolve(fleetActionQueue.remove());
+                    resolve(fleetActionQueue.poll());
                     fleeFreeSlots--;
                     continue;
                 } else if(!interfaceActionQueue.isEmpty()) {
-                    resolve(interfaceActionQueue.remove());
+                    resolve(interfaceActionQueue.poll());
                     continue;
                 }
 
@@ -62,7 +62,7 @@ public class Commander {
         Runnable task = () -> {
             while(true) {
                 while(!calculationActionQueue.isEmpty()) {
-                    resolve(fleetActionQueue.remove());
+                    resolve(calculationActionQueue.poll());
                 }
                 try {
                     TimeUnit.SECONDS.sleep(SLEEP_PAUSE);
@@ -76,22 +76,28 @@ public class Commander {
     }
 
     private void resolve(AbstractCommand command) {
+        boolean success;
         if(command.requiredGI() && !session.isLoggedIn()) {
             session.open();
         }
         try {
-            command.execute();
+            success = command.execute();
         }catch (Exception e) {
             e.printStackTrace();
+            success = false;
+        }
+
+        if(success) {
+            command.doAfter();
+            log.info("Executed "+command+ " prepare "+ command.getAfterCommand());
+        } else {
             command.failed++;
-            if(command.failed < 5) {
-                push(new PauseCommand(universe, command, 120));
+            if (command.failed < 5) {
+                push(new PauseCommand(universe, command, 10));
             } else {
-                System.err.println("\n\nTOTAL CRASH: "+command+"\n");
+                System.err.println("\n\nTOTAL CRASH: " + command + "\n");
             }
         }
-        command.doAfter();
-        log.info("Executed "+command+ " prepare "+ command.getAfterCommand());
     }
 
     private boolean isFleetFreeSlot() {
@@ -112,13 +118,13 @@ public class Commander {
 
     public void push(AbstractCommand command) {
         if (CommandType.FLEET_REQUIERED.equals(command.getType())) {
-            fleetActionQueue.add(command);
+            fleetActionQueue.offer(command);
             log.info("Inserted "+command+" into queue fleetActionQueue size "+fleetActionQueue.size());
         } else if (CommandType.INTERFACE_REQUIERED.equals(command.getType())) {
-            interfaceActionQueue.add(command);
+            interfaceActionQueue.offer(command);
             log.info("Inserted "+command+" into queue interfaceActionQueue size "+interfaceActionQueue.size());
         } else if (CommandType.CALCULATION.equals(command.getType())) {
-            calculationActionQueue.add(command);
+            calculationActionQueue.offer(command);
             log.info("Inserted "+command+" into queue calculationActionQueue size "+calculationActionQueue.size());
         }else {
             throw new RuntimeException("Invalid typeShip of command");

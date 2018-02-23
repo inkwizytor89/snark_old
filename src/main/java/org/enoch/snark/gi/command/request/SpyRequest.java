@@ -7,23 +7,22 @@ import org.enoch.snark.instance.Universe;
 import org.enoch.snark.model.Planet;
 import org.enoch.snark.model.SpyInfo;
 
-import java.util.HashMap;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 public class SpyRequest implements SpyObserver{
 
+    private final List<Planet> targets;
     private final SpyReportWaiter waiter;
-    private final int baseWait;
-    private final Map<Planet, SpyInfo> spyReport = new HashMap<>();
-    private boolean isNew = true;
+    private final List<SpyInfo> spyReport = new ArrayList<>();
+    private final LocalDateTime startTimestamp = LocalDateTime.now();
 
-    public SpyRequest(Universe universe, List<Planet> targets, SpyReportWaiter waiter, int baseWait) {
+    public SpyRequest(Universe universe, List<Planet> targets, SpyReportWaiter waiter) {
+        this.targets = targets;
         this.waiter = waiter;
-        this.baseWait = baseWait;
         for(Planet target : targets) {
-            spyReport.put(target, null);
 
             final SpyCommand spyCommand = new SpyCommand(universe, target);
             spyCommand.setAfterCommand(new ReadSpyInfoCommand(universe, target, this));
@@ -36,26 +35,26 @@ public class SpyRequest implements SpyObserver{
     private void returnSpyReport() {
         Runnable task = () -> {
              do {
-                isNew = false;
                 try {
-                    TimeUnit.SECONDS.sleep(baseWait);
+                    TimeUnit.SECONDS.sleep(10);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-            }while (isNew && !areAll());
+            }while (areNotAll());
 
-            waiter.saveSpyReport(spyReport.values());
+            waiter.saveSpyReport(spyReport);
         };
 
         new Thread(task).start();
     }
 
-    private boolean areAll() {
-        return !spyReport.values().contains(null);
+    private boolean areNotAll() {
+        LocalDateTime toLate = startTimestamp.plusMinutes(20);
+        return !LocalDateTime.now().isAfter(toLate) && spyReport.size() < targets.size();
+
     }
 
     public void report(SpyInfo info) {
-        isNew = true;
-        spyReport.put(info.planet, info);
+        spyReport.add(info);
     }
 }

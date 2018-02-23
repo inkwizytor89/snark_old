@@ -15,6 +15,6 @@ public abstract class GICommand extends AbstractCommand {
         super(universe, type);
         session = universe.session;
         chromeDriver = session.getChromeDriver();
-        selenium = session.getSelenium();
+        selenium = session.getSeleniumDriver();
     }
 }

@@ -1,5 +1,6 @@
 package org.enoch.snark.gi.command.impl;
 
+import org.enoch.snark.gi.command.SpyReporter;
 import org.enoch.snark.gi.macro.GIUrlBuilder;
 import org.enoch.snark.gi.command.AbstractCommand;
 import org.enoch.snark.gi.command.SpyObserver;
@@ -16,7 +17,7 @@ import java.util.concurrent.TimeUnit;
 
 import static org.enoch.snark.gi.command.CommandType.INTERFACE_REQUIERED;
 
-public class ReadSpyInfoCommand extends AbstractCommand {
+public class ReadSpyInfoCommand extends AbstractCommand implements SpyReporter {
 
     private final Universe universe;
     private Planet planet;
@@ -30,7 +31,7 @@ public class ReadSpyInfoCommand extends AbstractCommand {
     }
 
     @Override
-    public void execute() {
+    public boolean execute() {
         SpyInfo lastSpyInfo = universe.messageService.getLastSpyInfo(planet);
 
         if(lastSpyInfo == null || !lastSpyInfo.isStillAvailable(10)) {
@@ -42,9 +43,14 @@ public class ReadSpyInfoCommand extends AbstractCommand {
             lastSpyInfo = universe.messageService.getLastSpyInfo(planet);
         }
 
+        if(lastSpyInfo == null) {
+            return false;
+        }
+        lastSpyInfo.source = universe.findNearestSource(lastSpyInfo.planet);
         if(observer!= null) {
             observer.report(lastSpyInfo);
         }
+        return true;
     }
 
     private List<String> loadMessagesLinks() {
@@ -58,6 +64,11 @@ public class ReadSpyInfoCommand extends AbstractCommand {
             }
         }
         return spyReports;
+    }
+
+    @Override
+    public SpyObserver getSpyObserver() {
+        return observer;
     }
 
     @Override

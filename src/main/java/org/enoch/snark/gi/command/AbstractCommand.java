@@ -1,8 +1,8 @@
 package org.enoch.snark.gi.command;
 
+import org.enoch.snark.gi.command.impl.PauseCommand;
 import org.enoch.snark.instance.Universe;
 
-import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
 public abstract class AbstractCommand {
@@ -19,21 +19,16 @@ public abstract class AbstractCommand {
         this.type = type;
     }
 
-    public abstract void execute();
+    public abstract boolean execute();
 
     public void doAfter() {
         if(afterCommand == null) {
             return;
         }
-        Runnable task = () -> {
-            universe.session.sleep(TimeUnit.SECONDS, secoundToDelay);
-            universe.commander.push(afterCommand);
-        };
-
-        new Thread(task).start();
+        universe.commander.push(new PauseCommand(universe, afterCommand, secoundToDelay));
     }
 
-    protected void setSecoundToDelay(int secoundToDelay) {
+    protected void setSecoundToDelayAfterCommand(int secoundToDelay) {
         this.secoundToDelay = secoundToDelay;
     }
 

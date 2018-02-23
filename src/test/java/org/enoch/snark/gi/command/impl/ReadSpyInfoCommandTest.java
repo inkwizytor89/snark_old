@@ -2,7 +2,6 @@ package org.enoch.snark.gi.command.impl;
 
 import org.enoch.snark.gi.AbstractSeleniumTest;
 import org.enoch.snark.gi.command.SpyObserver;
-import org.enoch.snark.model.Planet;
 import org.enoch.snark.model.SpyInfo;
 import org.junit.Test;
 

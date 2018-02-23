@@ -1,7 +1,6 @@
 package org.enoch.snark.instance;
 
 import org.enoch.snark.gi.GISession;
-import org.enoch.snark.gi.Commander;
 import org.enoch.snark.gi.macro.MessageService;
 import org.enoch.snark.model.Planet;
 import org.enoch.snark.model.SourcePlanet;
@@ -27,7 +26,9 @@ public class Universe {
         messageService = new MessageService(this);
         session = new GISession(this);
         if(isQueueEnabled) {
-            commander = new Commander(this);
+            commander = new CommanderImpl(this);
+        } else {
+            commander = new DumbCommanderImpl();
         }
     }
 

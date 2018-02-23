@@ -26,7 +26,7 @@ public class GIUrlBuilder {
                 "&system=" + target.system +
                 "&position=" + target.position +
                 "&type=1&mission=" + mission.getValue();
-        universe.session.getSelenium().open(builder);
+        universe.session.getSeleniumDriver().open(builder);
 
         loadFleetStatus();
     }
@@ -34,7 +34,7 @@ public class GIUrlBuilder {
     public void updateFleetStatus() {
         String builder = universe.appProperties.mainUrl + "?" +
                 "page=" + PAGE_BASE_FLEET ;
-        universe.session.getSelenium().open(builder);
+        universe.session.getSeleniumDriver().open(builder);
 
         loadFleetStatus();
     }
@@ -55,12 +55,12 @@ public class GIUrlBuilder {
     public void openMessages() {
         String builder = universe.appProperties.mainUrl + "?" +
                 "page=" + PAGE_MESSAGES;
-        universe.session.getSelenium().open(builder);
+        universe.session.getSeleniumDriver().open(builder);
     }
 
     public void openOverview() {
         String builder = universe.appProperties.mainUrl + "?" +
                 "page=" + PAGE_OVERVIEW;
-        universe.session.getSelenium().open(builder);
+        universe.session.getSeleniumDriver().open(builder);
     }
 }

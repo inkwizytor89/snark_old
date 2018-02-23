@@ -25,7 +25,7 @@ public class PauseCommand extends AbstractCommand {
     }
 
     @Override
-    public void execute() {
+    public boolean execute() {
         Runnable task = () -> {
                 try {
                     timeUnit.sleep(value);
@@ -36,6 +36,7 @@ public class PauseCommand extends AbstractCommand {
         };
 
         new Thread(task).start();
+        return true;
     }
 
     @Override
