@@ -30,7 +30,7 @@ public class GISession {
         System.setProperty(WEBDRIVER_CHROME_DRIVER, AppProperties.pathToChromeWebdriver);
         chromeDriver = new ChromeDriver();
         seleniumDriver = new WebDriverBackedSelenium(chromeDriver, appProperties.loginUrl);
-        sessionHelper = new SessionHelper(chromeDriver, seleniumDriver);
+        sessionHelper = new SessionHelper(universe, this);
         open();
     }
 

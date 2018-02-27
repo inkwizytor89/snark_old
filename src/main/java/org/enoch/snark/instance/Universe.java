@@ -1,6 +1,7 @@
 package org.enoch.snark.instance;
 
 import org.enoch.snark.gi.GISession;
+import org.enoch.snark.gi.macro.GIUrlBuilder;
 import org.enoch.snark.gi.macro.MessageService;
 import org.enoch.snark.model.Planet;
 import org.enoch.snark.model.SourcePlanet;
@@ -30,6 +31,8 @@ public class Universe {
         } else {
             commander = new DumbCommanderImpl();
         }
+
+        new GIUrlBuilder(this).updateFleetStatus();
     }
 
     public void runSI() {

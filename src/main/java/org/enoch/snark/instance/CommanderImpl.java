@@ -19,8 +19,11 @@ public class CommanderImpl implements Commander {
 
     private Universe universe;
     private GISession session;
-    private int fleeFreeSlots = 0;
-    private int expeditionFreeSlots = 0;
+
+    private int fleetCount = 0;
+    private int fleetMax = 0;
+    private int expeditionCount = 0;
+    private int expeditionMax = 0;
 
     private Queue<AbstractCommand> fleetActionQueue = new LinkedList<>();
     private Queue<AbstractCommand> interfaceActionQueue = new LinkedList<>();
@@ -37,9 +40,10 @@ public class CommanderImpl implements Commander {
         Runnable task = () -> {
             while(true) {
 
+
                 if(!fleetActionQueue.isEmpty() && isFleetFreeSlot()) {
                     resolve(fleetActionQueue.poll());
-                    fleeFreeSlots--;
+                    fleetCount++;
                     continue;
                 } else if(!interfaceActionQueue.isEmpty()) {
                     resolve(interfaceActionQueue.poll());
@@ -102,18 +106,21 @@ public class CommanderImpl implements Commander {
 
     private boolean isFleetFreeSlot() {
         if(!session.isLoggedIn()) return false;
-        if(fleeFreeSlots > 0)   return true;
+        if(getFleetFreeSlots() > 0)   return true;
         new GIUrlBuilder(universe).updateFleetStatus();
-        if(fleeFreeSlots > 0)   return true;
+        if(getFleetFreeSlots() > 0)   return true;
         return false;
     }
 
-    public void setFleeFreeSlots(int fleeFreeSlots) {
-        this.fleeFreeSlots = fleeFreeSlots;
+    public void setFleetStatus(int fleetCount, int fleetMax) {
+        this.fleetCount = fleetCount;
+        this.fleetMax = fleetMax;
     }
 
-    public void setExpeditionFreeSlots(int expeditionFreeSlots) {
-        this.expeditionFreeSlots = expeditionFreeSlots;
+    @Override
+    public void setExpeditionStatus(int expeditionCount, int expeditionMax) {
+        this.expeditionCount = expeditionCount;
+        this.expeditionMax = expeditionMax;
     }
 
     public void push(AbstractCommand command) {
@@ -129,5 +136,30 @@ public class CommanderImpl implements Commander {
         }else {
             throw new RuntimeException("Invalid typeShip of command");
         }
+    }
+
+    public int getFleetFreeSlots() {
+        return fleetMax - fleetCount;
+    }
+
+    @Override
+    public int getExpeditionFreeSlots() {
+        return expeditionMax - expeditionCount;
+    }
+
+    public int getFleetCount() {
+        return fleetCount;
+    }
+
+    public int getFleetMax() {
+        return fleetMax;
+    }
+
+    public int getExpeditionCount() {
+        return expeditionCount;
+    }
+
+    public int getExpeditionMax() {
+        return expeditionMax;
     }
 }

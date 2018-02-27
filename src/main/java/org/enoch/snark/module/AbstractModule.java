@@ -45,4 +45,8 @@ public abstract class AbstractModule implements Comparable<AbstractModule> {
     protected void setStatus(ModuleStatus status) {
         this.status = status;
     }
+
+    public boolean isInProgress() {
+        return this.status.equals(ModuleStatus.IN_PROGRESS);
+    }
 }

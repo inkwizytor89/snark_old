@@ -66,4 +66,14 @@ public class FarmModule extends AbstractModule implements SpyReportWaiter, Attac
     public void saveAttackReport(Collection<AttackInfo> values) {
 
     }
+
+    @Override
+    public boolean isReady() {
+        if(isInProgress()) return false;
+
+        final int fleetFreeSlots = universe.commander.getFleetFreeSlots();
+        final int fleetMax = universe.commander.getFleetMax();
+
+        return ((double) fleetFreeSlots / (double) fleetMax) > 0.6;
+    }
 }

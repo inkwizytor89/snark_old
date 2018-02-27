@@ -42,14 +42,16 @@ public class GIUrlBuilder {
     private void loadFleetStatus() {
         final WebElement slotsLabel = universe.session.getChromeDriver().findElement(By.id("slots"));
         final String[] split = slotsLabel.getText().split("\\s");
-        universe.commander.setFleeFreeSlots(returnFreeSlots(split[2]));
-        universe.commander.setExpeditionFreeSlots(returnFreeSlots(split[4]));
+        universe.commander.setFleetStatus(returnValue(split[2]), returnMax(split[2]));
+        universe.commander.setExpeditionStatus(returnValue(split[4]), returnMax(split[4]));
     }
 
-    private int returnFreeSlots(String status) {
-        int value = Integer.parseInt(status.split("/")[0]);
-        int max = Integer.parseInt(status.split("/")[1]);
-        return max - value;
+    private int returnValue(String status) {
+        return Integer.parseInt(status.split("/")[0]);
+    }
+
+    private int returnMax(String status) {
+        return Integer.parseInt(status.split("/")[1]);
     }
 
     public void openMessages() {

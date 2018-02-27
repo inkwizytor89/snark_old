@@ -26,16 +26,33 @@ public class SI {
 
     public void run() {
         while(true) {
-            nearestActionDate = initTime();
             for (AbstractModule module : modules) {
                 if (module.isReady()) {
                     module.run();
+                } if (module.isInProgress()) {
+                    break;
                 }
-                updateNearestActionDate(module.getReadyOn(), module);
             }
-            sleep();
+            try {
+                TimeUnit.SECONDS.sleep(20);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
+
+//    public void run() {
+//        while(true) {
+//            nearestActionDate = initTime();
+//            for (AbstractModule module : modules) {
+//                if (module.isReady()) {
+//                    module.run();
+//                }
+//                updateNearestActionDate(module.getReadyOn(), module);
+//            }
+//            sleep();
+//        }
+//    }
 
     private void updateNearestActionDate(Date readyOn, AbstractModule module) {
         if(nearestActionDate.after(readyOn)) {
